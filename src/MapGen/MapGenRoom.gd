@@ -1,10 +1,11 @@
 @icon("res://MapGen/icons/MapGenRoom.svg")
 extends Resource
+## Room resource
 class_name MapGenRoom
 
 enum DoubleRoomTypes {NONE, ROOM2D = 2, ROOM2CD = 3, ROOM3D = 4, ROOM4D = 5}
 
-enum DoubleRoomPosition {UP, DOWN, LEFT, RIGHT}
+enum DoubleRoomFixedRotation {DEGREES_0, DEGREES_90, DEGREES_180, DEGREES_270}
 
 @export var name: String
 @export var prefab: PackedScene
@@ -29,6 +30,8 @@ enum DoubleRoomPosition {UP, DOWN, LEFT, RIGHT}
 ## Exported GLTF path, used when PackedScene is not available
 @export var gltf_path: String = ""
 @export_group("Double rooms")
-@export var double_room_position: DoubleRoomPosition = DoubleRoomPosition.UP
 ## Room shape for double room generation
 @export var double_room_shape: DoubleRoomTypes = DoubleRoomTypes.NONE
+## Fixed double room rotation
+## Unfortunately, it is a REQUIRED workaround for double rooms
+@export var double_room_rotation: DoubleRoomFixedRotation = DoubleRoomFixedRotation.DEGREES_0

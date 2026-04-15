@@ -8,23 +8,25 @@
 ## Parameters
 There are some parameters:
 
+- `Generator Type`: (only regular frontend) Choose between different backends - AStar (procedural generation) or Layout (SCP:SL-like)
 - `Seed`: the seed for random generator. The map generation is dependent on this value. -1 means random seed.
 - `Rooms`: See Rooms chapter.
+- `Layout Images`: (only Layout backend) images for layouts, see [layout room rotations to construct](./imgs/layout_sample.png), every room should be 1 pixel! Structure: [zone[Texture2D, Texture2D, ...], [Texture2D, ...]...]
 - `Zone size`: The size for a "zone" - a square, which contains rooms.
 - `Map Size X and Y`: Amount of "zones" (not rooms). Can be rectangular, unlike a zone.
   - ⚠ X and Y are beginning from 0, not 1!
-  - ⚠ The amount of zones in Rooms variable MUST be equal or more than X ` Y (or (X + 1) ` (Y + 1), if you count zones from 1)
+  - ⚠ If you use Layout generator, only Y parameter have effect, X will do nothing.
+  - ⚠ The amount of zones in Rooms variable MUST be equal or more than X ` Y (or (X + 1) ` (Y + 1), if you count zones from 1
 - `Grid size`: The size of a room model (X and Z dimensions). For SCP-CB remake, you should use 20.48, the default value.
-- `Large rooms`: Usually, the room size should be equal to `Grid size` variable. But what about bigger rooms? Since v.6.1, the large rooms (max size - 2 * 3 cells for endrooms) are supported too, althrough limited to `Zone_size` / 6
+- `Large rooms`: (only AStar backend) Usually, the room size should be equal to `Grid size` variable. But what about bigger rooms? Since v.6.1, the large rooms (max size - 2 * 3 cells for endrooms) are supported too, althrough limited to `Zone_size` / 6
 - `Room amount`: Amount of endrooms. Calculated as `Zone_size` * `Room_amount`. Maybe not accurate, if `Better zone generation` not enabled.
 - `Enable door generation`: Generates doors between rooms. Can use different doors, since v.5.1, this also affect checkpoint rooms since v.8.0
 - `Checkpoints enabled`: Adds checkpoints to each zone (and **decrease** available room spawn). Added in v.8.0
   - ⚠ The checkpoint room behaves differently, than SCP-CB checkpoints, the "checkpoint" in this mapgen have 2 rooms (like HCZ-EZ checkpoint in SCP: Secret Lab.), not one (as in SCP-CB). .
-- `Better zone generation`: Enable endroom checking (there are situations, where the last room to generate is in a existing hallway). May have a little generation time cost. Available since v. 7.1
-  - `Better zone generation min amount`: Minimal amount of rooms for `Better zone generation`.
+- `Better zone generation`: (only AStar backend) Enable endroom checking (there are situations, where the last room to generate is in a existing hallway). May have a little generation time cost. Available since v. 7.1
+  - `Better zone generation min amount`: (only AStar backend) Minimal amount of rooms for `Better zone generation`.
 - `Debug print` - debug option, prints map layout.
-- `Double Room Support`: Enables double rooms (seamless). Available since 9.0.
-  - ⚠ Works only for hallways and X-shaped intersections.
+- `Double Room Support`: (only AStar backend) Enables double rooms (seamless). Available since 9.0 as experimental feature, finalized since 12.0.
 
 ## Rooms
 `Rooms` parameter is the specific `Resource` type, where contains the room of the zones:
@@ -50,8 +52,8 @@ All parameters in this resource (called `MapGenZone`) (except `Door frames`) are
 - `Door type` - The default value, -1 means, that any door frame (see MapGenZone doorframes) can be used. Otherwise, only specific door frame can be used with this room (similar mechanic used in SCP: Secret Lab. since 14.0). Added in MapGen v.8.0\
 - `Guaranteed spawn` - ignore Spawn chance property (works only for `Single` room types). Added in v8.1
   - ⚠ If the map size is too small, guaranteed rooms may not spawn.
-- `Double Room Position` is the rotation of double rooms (added in v10.0). Always check, that the first room is UP - second is DOWN or first room is LEFT - second is RIGHT!
 - `Double Room Shape` is type of double room (added in v10.0).
+- `Double Room Rotation` is the rotation of double rooms (added in v12.0). Do not be confused with now-removed `Double Room Position`, this is actual rotation the room will have!
 
 ## Prepare a room for map generation.
 In Godot editor, make sure, that the exits of rooms faces the axis, seen in this picture:

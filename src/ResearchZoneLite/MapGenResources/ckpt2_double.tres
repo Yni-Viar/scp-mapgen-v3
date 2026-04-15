@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MapGenRoom" load_steps=5 format=3 uid="uid://bq6mu3br6pmti"]
+
+[ext_resource type="Texture2D" uid="uid://bdohqm7yw00if" path="res://Assets/HUD/room2_90.png" id="1_amwrk"]
+[ext_resource type="Texture2D" uid="uid://8etimuikkbyb" path="res://Assets/HUD/room2.png" id="2_lqw7n"]
+[ext_resource type="PackedScene" uid="uid://bg1pcsyl6uxki" path="res://ResearchZoneLite/Rooms/Room2Checkpoint/rz_ckpt_2.tscn" id="3_sj50o"]
+[ext_resource type="Script" uid="uid://b15b7mhits7ot" path="res://MapGen/MapGenRoom.gd" id="4_iqybg"]
+
+[resource]
+script = ExtResource("4_iqybg")
+name = "room2_maze"
+prefab = ExtResource("3_sj50o")
+icon_0_degrees = ExtResource("1_amwrk")
+icon_90_degrees = ExtResource("2_lqw7n")
+icon_180_degrees = ExtResource("1_amwrk")
+icon_270_degrees = ExtResource("2_lqw7n")
+spawn_chance = 50.0
+double_room_shape = 2

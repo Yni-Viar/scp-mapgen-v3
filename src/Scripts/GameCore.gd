@@ -29,8 +29,10 @@ func reset_settings():
 		if ResourceLoader.exists("res://ResearchZoneLite/RZLite.tres"):
 			var zones: Array[MapGenZone] = [load("res://ResearchZoneLite/RZLite.tres")]
 			$FacilityGenerator.rooms = zones
-			$FacilityGeneratorRender.rooms = zones
+			if get_node_or_null("FacilityGeneratorRender") != null:
+				$FacilityGeneratorRender.rooms = zones
 		else:
 			var zones: Array[MapGenZone] = [load("res://Assets/Rooms/SimpleTest.tres")]
 			$FacilityGenerator.rooms = zones
-			$FacilityGeneratorRender.rooms = zones
+			if get_node_or_null("FacilityGeneratorRender") != null:
+				$FacilityGeneratorRender.rooms = zones

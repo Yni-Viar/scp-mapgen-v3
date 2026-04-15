@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://gbjkjbslq5ys"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_dfw66"]
-size = Vector2(20.48, 20.48)
-
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_1lh5t"]
 points = PackedVector3Array(-10.24, 0, -10.24, -10.24, 0, 10.24, 10.24, 0, -10.24, 10.24, 0, 10.24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qu6j7"]
+size = Vector3(1, 1, 10.24)
 
 [node name="room2_b" type="StaticBody3D"]
 
@@ -13,8 +13,9 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 1
 text = "ROOM1"
 font_size = 768
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_dfw66")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("ConvexPolygonShape3D_1lh5t")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+mesh = SubResource("BoxMesh_qu6j7")

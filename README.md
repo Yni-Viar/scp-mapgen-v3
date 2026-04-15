@@ -6,15 +6,19 @@ SCP-like facility map generator
 
 [Room pack tutorial](./docs/runtime_loader.md)
 
+### Example room packs
+
+[Different SCP game room packs](https://drive.google.com/drive/folders/1UmT7aUYJr4saZwcFIcxbodW9uFaHlFR8?usp=sharing)
+
+### Games using this map generator
+
 [SCP: Containment Procedures uses this map generator](https://github.com/Yni-Viar/scp-containmentprocedures)
 
-[Example room packs](https://drive.google.com/drive/folders/1UmT7aUYJr4saZwcFIcxbodW9uFaHlFR8?usp=sharing)
+### Other editions
 
-## Other editions
+[CLI version (needs update to current version)](https://github.com/Yni-Viar/scp-mapgen-cli)
 
-[CLI version](https://github.com/Yni-Viar/scp-mapgen-cli)
-
-[Unreal Engine Version](https://github.com/Yni-Viar/grid-mapgen-ue)
+[Unreal Engine Version (needs update to current version)](https://github.com/Yni-Viar/grid-mapgen-ue)
 
 Unity (Coming soon...)
 
@@ -24,21 +28,27 @@ Unity (Coming soon...)
 - If your project is licensed under CC-BY-SA 3.0, CC-BY-SA 4.0 or GPL 3 (e.g. *SCP - Containment Breach* remake), the Author grants You permission to relicense the code under mentioned licenses.
 
 ## What works:
-- [x] Random generation (NOT Layout based)
+- [x] Random generation (Both layout and not layout (AStar) based, can be switched by setting)
 - [x] Single room support *\(supported only in Regular and Renderer map generator\)*
-- [x] Large room support *\(supported only in Regular and Renderer map generator\)*
+- [x] Large room support *\(supported only in Regular AStar and Renderer map generator\)*
 - [x] Door support (currently only in 3D version)
 - [x] Modular.
 - [x] Randomized door + assign specific door to a room
 - [x] Checkpoint support *Note, that these checkpoints work differently from Containment Breach ones*
 - [x] Many zone support (both in x and y directions) (currently, there is a limit of 512 rooms in a single generator node, you can increase it in code, but this may affect the performance (especcialy in 3D))
 - [x] Variable room spawn, based on room chance / guaranteed spawn.
-- [x] Seamless double rooms *\(All non-endroom types supported since v10\), \(supported only in Regular and Infinite map generator\)*
-- [x] This sample also includes room pack loader and layout saver (from GLTF to GLTF) (since v10.2)
+- [x] Seamless double rooms, *\(supported only in Regular AStar and Infinite map generator\)*
+- [x] This sample also includes room pack loader and layout saver (from GLTF to GLTF)
 
 *[See MapGen comparison for more information](./docs/scp-mapgen-comparison.md)*
 
 ## Changelog
+### v.12.0.0 (2026.04.14)
+- Revamped double room system, and they are probably ready to be used, not experimental feature anymore! (Open issue, if you found a bug in that system!)
+- Added second backend - Layout map generator, as well as re-organized backend system.
+- \[MapGen Room Previewer\] Added different tonemappers.
+- Fixed possibility of spawning two same single rooms.
+
 ### v.11.3.0 (2026.01.15)
 - EVEN MORE PERFORMANCE!!! Lowered average map generation time to ~ 1.1 ms (both backend and 3d frontend, tested on default 8x8 map x 1 zone)
 ### v.11.2.0 (2026.01.12)

@@ -1,5 +1,6 @@
 @icon("res://MapGen/icons/MapGenRender3D.svg")
 extends Node3D
+## Render map generator frontend
 class_name FacilityGeneratorRender3D
 
 signal generated
@@ -7,16 +8,32 @@ signal parameter_changed
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
-var mapgen_core: MapGenCore = MapGenCore.new()
+var mapgen_core: MapGenCore
+
+enum GeneratorType {MAPGEN_ASTAR, MAPGEN_LAYOUT}
 
 enum RoomTypes {EMPTY, ROOM1, ROOM2, ROOM2C, ROOM3, ROOM4}
 
+## Only read at initialization.
+@export var generator_type: GeneratorType = GeneratorType.MAPGEN_ASTAR:
+	set(val):
+		if mapgen_core != null:
+			printerr("Map generator is already initialized")
+		else:
+			generator_type = val
+## Random seed.
 @export var rng_seed: int = -1:
 	set(val):
 		rng_seed = val
 		parameter_changed.emit()
 ## Rooms that will be used
 @export var rooms: Array[MapGenZone]
+## Layout images (format: Array[Array[Texture2D]])
+## Only used, when generator_type is set to Layout generation.
+@export var layout_images: Array[Array] = []:
+	set(val):
+		layout_images = val
+		parameter_changed.emit()
 ## Zone size
 @export_range(8, 256, 2) var zone_size: int = 8:
 	set(val):
@@ -116,7 +133,7 @@ var room_count: Dictionary[String, PackedInt32Array] = {
 var unused_rooms: Array[MapGenZone]
 
 var file_counter: int = 0
-var cached_scenes: Dictionary[String, PackedScene]
+var cached_scenes: Array[String] = []
 
 var gltf_document: GLTFDocument
 var gltf_state:GLTFState
@@ -127,6 +144,11 @@ var selected_room: PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	match generator_type:
+		GeneratorType.MAPGEN_ASTAR:
+			mapgen_core = MapGenAStar.new()
+		GeneratorType.MAPGEN_LAYOUT:
+			mapgen_core = MapGenLayout.new()
 	parameter_changed.connect(refresh_mapgen)
 	refresh_mapgen()
 	gltf_document = GLTFDocument.new()
@@ -134,6 +156,8 @@ func _ready() -> void:
 
 func refresh_mapgen():
 	mapgen_core.rng = rng
+	if generator_type == GeneratorType.MAPGEN_LAYOUT:
+		mapgen_core.layout_images = layout_images
 	mapgen_core.zone_size = zone_size
 	mapgen_core.map_size_x = map_size_x
 	mapgen_core.map_size_y = map_size_y
@@ -158,14 +182,16 @@ func generate_rooms(path: String):
 	size_y = zone_size * (map_size_y + 1)
 	# Initialize, what double room shapes are being used
 	if double_room_support:
+		#for i in range(rooms.size()):
+			#double_room_shapes.append([])
+			#for double_rooms in rooms[i].double_rooms:
+				#if double_rooms[0] is MapGenRoom && double_rooms[1] is MapGenRoom:
+					#double_room_shapes[i].append([double_rooms[0], double_rooms[1]])
+		mapgen_core.rooms = unused_rooms
+	if large_rooms:
+		mapgen_core.endrooms_single_large_amount.resize(rooms.size())
 		for i in range(rooms.size()):
-			double_room_shapes.append([])
-			for double_rooms in rooms[i].double_rooms:
-				if double_rooms[0] is MapGenRoom && double_rooms[1] is MapGenRoom:
-					double_room_shapes[i].append([double_rooms[0], double_rooms[1]])
-		mapgen_core.double_room_shapes = double_room_shapes
-	for zone in rooms:
-		mapgen_core.endrooms_single_large_amount.append(zone.endrooms_single_large.size())
+			mapgen_core.endrooms_single_large_amount[i] = rooms[i].endrooms_single_large.size()
 	mapgen_core.start_generation()
 	mapgen = mapgen_core.mapgen
 	#rng.seed = mapgen_core.rng.seed

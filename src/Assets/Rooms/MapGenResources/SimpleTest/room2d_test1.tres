@@ -14,5 +14,5 @@ icon_90_degrees = ExtResource("2_iw6os")
 icon_180_degrees = ExtResource("1_ml07r")
 icon_270_degrees = ExtResource("2_iw6os")
 spawn_chance = 50.0
-double_room_position = 1
 double_room_shape = 2
+double_room_rotation = 2

@@ -1,5 +1,6 @@
 @icon("res://MapGen/icons/MapGenInfinite3D.svg")
 extends Node3D
+## Infinite map generator frontend
 class_name FacilityGeneratorInfinite3D
 
 signal generated
@@ -9,7 +10,7 @@ signal parameter_changed
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
-var mapgen_core: MapGenCore = MapGenCore.new()
+var mapgen_core: MapGenAStar = MapGenAStar.new()
 
 enum RoomTypes {EMPTY, ROOM1, ROOM2, ROOM2C, ROOM3, ROOM4}
 

@@ -55,7 +55,8 @@ func _on_room_pack_button_pressed() -> void:
 func _on_room_scale_edit_text_changed(new_text: String) -> void:
 	if new_text.is_valid_float():
 		get_parent().get_node("FacilityGenerator").grid_size = float(new_text)
-		get_parent().get_node("FacilityGeneratorRender").grid_size = float(new_text)
+		if get_parent().get_node_or_null("FacilityGeneratorRender") != null:
+			get_parent().get_node("FacilityGeneratorRender").grid_size = float(new_text)
 
 
 func _on_save_result_pressed() -> void:
@@ -67,7 +68,8 @@ func _on_save_result_pressed() -> void:
 func _on_zone_size_edit_text_changed(new_text: String) -> void:
 	if new_text.is_valid_int():
 		get_parent().get_node("FacilityGenerator").zone_size = int(new_text)
-		get_parent().get_node("FacilityGeneratorRender").zone_size = int(new_text)
+		if get_parent().get_node_or_null("FacilityGeneratorRender") != null:
+			get_parent().get_node("FacilityGeneratorRender").zone_size = int(new_text)
 
 
 func _on_door_toggled(toggled_on: bool) -> void:
@@ -85,7 +87,8 @@ func _on_enable_lighting_toggled(toggled_on: bool) -> void:
 
 func _on_enable_checkpoints_toggled(toggled_on: bool) -> void:
 	get_parent().get_node("FacilityGenerator").checkpoints_enabled = toggled_on
-	get_parent().get_node("FacilityGeneratorRender").checkpoints_enabled = toggled_on
+	if get_parent().get_node_or_null("FacilityGeneratorRender") != null:
+		get_parent().get_node("FacilityGeneratorRender").checkpoints_enabled = toggled_on
 
 
 func _on_hints_toggled(toggled_on: bool) -> void:
@@ -143,3 +146,11 @@ func _on_generate_and_save_pressed() -> void:
 	if OS.get_name() == "Android":
 		OS.request_permission("android.permissions.WRITE_EXTERNAL_STORAGE")
 	get_parent().get_node("RoomQuickSaver/FileDialog").show()
+
+
+func _on_tonemapper_item_selected(index: int) -> void:
+	get_parent().get_node("WorldEnvironment").environment.tonemap_mode = index as Environment.ToneMapper
+	if index > 0 && index < 4:
+		get_parent().get_node("WorldEnvironment").environment.tonemap_white = 2.0
+	else:
+		get_parent().get_node("WorldEnvironment").environment.tonemap_white = 1.0

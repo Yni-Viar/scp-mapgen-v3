@@ -1,5 +1,6 @@
 @icon("res://MapGen/icons/MapGenResource.svg")
 extends Resource
+## Zone resource - a set of rooms
 class_name MapGenZone
 
 

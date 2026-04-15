@@ -10,7 +10,7 @@ For runtime load, you need a ZIP file with folders in this format
 |  |  |- Room2
 |  |  |- Room2Single
 |  |  |- Room2SingleLarge
-|  |  |- Room2Checkpoints
+|  |  |- Room2Checkpoint
 |  |  |- Room2c
 |  |  |- Room2cSingle
 |  |  |- Room2cSingleLarge
