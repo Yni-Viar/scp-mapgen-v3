@@ -120,12 +120,6 @@ var size_y: int
 var double_room_shapes: Array[Array]
 
 var room_count: Dictionary[String, PackedInt32Array] = {
-# single rooms
-	"room1_count": PackedInt32Array([0]),
-	"room2_count": PackedInt32Array([0]),
-	"room2c_count": PackedInt32Array([0]),
-	"room3_count": PackedInt32Array([0]),
-	"room4_count": PackedInt32Array([0]),
 # large rooms
 	"room1l_count": PackedInt32Array([0]),
 	"room2l_count": PackedInt32Array([0]),
@@ -376,12 +370,11 @@ func room_select(type: RoomTypes, zone_index: int, n: int, o: int) -> void:
 	
 	if single_room_data != null:
 		var spawn_chance = rng.randf_range(0.0, single_room_data.spawn_chance + room_data.spawn_chance)
-		if (room_count[keyword][zone_index] < rooms_single.size() && spawn_chance < single_room_data.spawn_chance) || single_room_data.guaranteed_spawn:
+		if spawn_chance < single_room_data.spawn_chance || single_room_data.guaranteed_spawn:
 			# Single rooms spawn
 			mapgen[n][o].resource = single_room_data
+			selected_room = mapgen[n][o].resource.prefab
 			rooms_single.erase(single_room_data)
-			room_count[keyword][zone_index] += 1
-			selected_room = single_room_data.prefab
 		else:
 			# Generic room spawn
 			mapgen[n][o].resource = room_data

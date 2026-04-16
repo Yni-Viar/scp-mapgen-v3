@@ -325,27 +325,27 @@ func room_select(type: RoomTypes, zone_index: int, n: int, o: int) -> void:
 	var keyword: String = ""
 	match type:
 		RoomTypes.ROOM1:
-			rooms_single = rooms[zone_index].endrooms_single
+			rooms_single = unused_rooms[zone_index].endrooms_single
 			single_room_data = random_room_with_chance(unused_rooms[zone_index].endrooms_single, true)
 			room_data = random_room_with_chance(unused_rooms[zone_index].endrooms)
 			keyword = "room1_count"
 		RoomTypes.ROOM2:
-			rooms_single = rooms[zone_index].hallways_single
+			rooms_single = unused_rooms[zone_index].hallways_single
 			single_room_data = random_room_with_chance(unused_rooms[zone_index].hallways_single, true)
 			room_data = random_room_with_chance(unused_rooms[zone_index].hallways)
 			keyword = "room2_count"
 		RoomTypes.ROOM2C:
-			rooms_single = rooms[zone_index].corners_single
+			rooms_single = unused_rooms[zone_index].corners_single
 			single_room_data = random_room_with_chance(unused_rooms[zone_index].corners_single, true)
 			room_data = random_room_with_chance(unused_rooms[zone_index].corners)
 			keyword = "room2c_count"
 		RoomTypes.ROOM3:
-			rooms_single = rooms[zone_index].trooms_single
+			rooms_single = unused_rooms[zone_index].trooms_single
 			single_room_data = random_room_with_chance(unused_rooms[zone_index].trooms_single, true)
 			room_data = random_room_with_chance(unused_rooms[zone_index].trooms)
 			keyword = "room3_count"
 		RoomTypes.ROOM4:
-			rooms_single = rooms[zone_index].crossrooms_single
+			rooms_single = unused_rooms[zone_index].crossrooms_single
 			single_room_data = random_room_with_chance(unused_rooms[zone_index].crossrooms_single, true)
 			room_data = random_room_with_chance(unused_rooms[zone_index].crossrooms)
 			keyword = "room4_count"
@@ -355,17 +355,17 @@ func room_select(type: RoomTypes, zone_index: int, n: int, o: int) -> void:
 	
 	if single_room_data != null:
 		var spawn_chance = rng.randf_range(0.0, single_room_data.spawn_chance + room_data.spawn_chance)
-		if (room_count[keyword][zone_index] < rooms_single.size() && spawn_chance < single_room_data.spawn_chance) || single_room_data.guaranteed_spawn:
+		if spawn_chance < single_room_data.spawn_chance || single_room_data.guaranteed_spawn:
 			# Single rooms spawn
 			mapgen[n][o].resource = single_room_data
-			selected_room = single_room_data.prefab
-			room_count[keyword][zone_index] += 1
+			selected_room = mapgen[n][o].resource.prefab
+			rooms_single.erase(single_room_data)
 		else:
 			# Generic room spawn
 			mapgen[n][o].resource = room_data
 			selected_room = room_data.prefab
-			if !rooms_single.has(single_room_data):
-				rooms_single.append(single_room_data)
+			#if !rooms_single.has(single_room_data):
+				#rooms_single.append(single_room_data)
 	else:
 		# Generic room spawn
 		mapgen[n][o].resource = room_data
@@ -373,6 +373,8 @@ func room_select(type: RoomTypes, zone_index: int, n: int, o: int) -> void:
 
 ## Returns random room, depending on chance
 func random_room_with_chance(rooms_pack: Array[MapGenRoom], single: bool = false) -> MapGenRoom:
+	if rooms_pack.is_empty():
+		return null
 	var counter: float = 0.0
 	var prev_counter: float = 0.0
 	var room_res: MapGenRoom
@@ -397,8 +399,8 @@ func random_room_with_chance(rooms_pack: Array[MapGenRoom], single: bool = false
 		all_spawn_chances.clear()
 	counter = 0
 	prev_counter = 0
-	if single:
-		rooms_pack.erase(room_res)
+	#if single:
+		#rooms_pack.erase(room_res)
 	return room_res
 
 ### Spawn doors
