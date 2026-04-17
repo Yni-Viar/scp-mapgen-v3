@@ -130,6 +130,10 @@ func _ready() -> void:
 	chunk_area.body_exited.connect(_on_optimizator_body_exited)
 	parameter_changed.connect(refresh_mapgen)
 	refresh_mapgen()
+	if get_parent() is MapGenInfinite3D:
+		if !get_parent().loaded_chunks.has(chunk):
+			get_parent().loaded_chunks[chunk] = rng.seed
+		rng_seed = get_parent().loaded_chunks[chunk]
 
 func refresh_mapgen():
 	mapgen_core.rng = rng
@@ -602,8 +606,6 @@ func _on_optimizator_body_entered(body: Node3D):
 	if body is CharacterBody3D:
 		if !rooms_are_generated:
 			generate_rooms()
-			if !get_parent().loaded_chunks.has(chunk):
-				get_parent().loaded_chunks.append(chunk)
 			var new_chunks: Array[Vector2i] = [Vector2i(chunk.x - 1, chunk.y - 1), Vector2i(chunk.x - 1, chunk.y), Vector2i(chunk.x - 1, chunk.y + 1), \
 				Vector2i(chunk.x, chunk.y - 1), Vector2i(chunk.x, chunk.y + 1), \
 				Vector2i(chunk.x + 1, chunk.y - 1), Vector2i(chunk.x + 1, chunk.y), Vector2i(chunk.x + 1, chunk.y + 1)
@@ -611,9 +613,11 @@ func _on_optimizator_body_entered(body: Node3D):
 			if get_parent() is MapGenInfinite3D:
 				for chunk_pos in new_chunks:
 					if get_parent().loaded_chunks.has(chunk_pos):
+						#get_parent().loaded_chunks[chunk_pos] = rng.seed + int(sin(deg_to_rad(chunk_pos.x)) * 100) + int(cos(deg_to_rad(chunk_pos.y)) * 100)
+					#else:
 						continue
 					var facility_generator: FacilityGeneratorInfinite3D = FacilityGeneratorInfinite3D.new()
-					facility_generator.rng_seed = rng.seed + int(sin(deg_to_rad(chunk_pos.x)) * 100) + int(cos(deg_to_rad(chunk_pos.y)) * 100)
+					facility_generator.chunk = chunk_pos
 					facility_generator.rooms = rooms
 					facility_generator.zone_size = zone_size
 					facility_generator.grid_size = grid_size
@@ -627,9 +631,7 @@ func _on_optimizator_body_entered(body: Node3D):
 					facility_generator.double_room_support = double_room_support
 					facility_generator.double_room_shapes = double_room_shapes
 					facility_generator.mapgen = mapgen
-					facility_generator.chunk = chunk_pos
 					get_parent().add_child(facility_generator)
-					get_parent().loaded_chunks.append(chunk_pos)
 
 func _on_optimizator_body_exited(body: Node3D):
 	if body is CharacterBody3D:

@@ -248,7 +248,6 @@ func spawn_rooms() -> void:
 						# Checkpoint room spawn
 						mapgen[n][o].resource = rooms[zone_index].checkpoint_hallway[rng.randi_range(0, rooms[zone_index].checkpoint_hallway.size() - 1)]
 						selected_room = rooms[zone_index].checkpoint_hallway[rng.randi_range(0, rooms[zone_index].checkpoint_hallway.size() - 1)].prefab
-						room_count["room2_count"][zone_index] += 1
 					elif large_rooms && mapgen[n][o].large && rooms[zone_index].hallways_single_large.size() > 0 && room_count["room2l_count"][zone_index] < rooms[zone_index].hallways_single_large.size():
 						# Large rooms spawn, when large_rooms enabled
 						selected_room = rooms[zone_index].hallways_single_large[room_count["room2l_count"][zone_index]].prefab
