@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="SCP-like Map Generator"
 config/description="A procedural map generator, inspired from SCP-Containment Breach one."
-config/version="12.0.2"
+config/version="12.0.3"
 config/tags=PackedStringArray("map_generation", "scp_foundation", "template")
 run/main_scene="uid://6l8r5fy0ymqt"
 config/use_custom_user_dir=true
